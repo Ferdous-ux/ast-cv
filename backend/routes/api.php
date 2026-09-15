@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\ResumeAwardController;
@@ -225,4 +226,49 @@ Route::middleware('auth:sanctum')->group(function () {
         'resumes.links',
         ResumeLinkController::class
     )->except(['create', 'edit']);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Admin - Staff Management
+    |--------------------------------------------------------------------------
+    |
+    | These endpoints are protected by Sanctum authentication.
+    | Fine-grained authorization is enforced inside the
+    | Form Requests and StaffPolicy.
+    |
+    */
+
+    Route::prefix('admin')->group(function () {
+
+        Route::get(
+            '/staff',
+            [StaffController::class, 'index']
+        );
+
+        Route::get(
+            '/staff/{staff}',
+            [StaffController::class, 'show']
+        );
+
+        Route::post(
+            '/staff',
+            [StaffController::class, 'store']
+        );
+
+        Route::put(
+            '/staff/{staff}',
+            [StaffController::class, 'update']
+        );
+
+        Route::delete(
+            '/staff/{staff}',
+            [StaffController::class, 'destroy']
+        );
+
+        Route::put(
+            '/staff/{staff}/roles',
+            [StaffController::class, 'updateRoles']
+        );
+    });
 });
