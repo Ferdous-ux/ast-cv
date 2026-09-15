@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Tests\Feature;
 
 use App\Models\Resume;
@@ -7,6 +8,7 @@ use App\Models\ResumeExperience;
 use App\Models\ResumeVersion;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class ResumeTest extends TestCase
@@ -55,4 +57,107 @@ class ResumeTest extends TestCase
             $experience->resumeVersion->id
         );
     }
+
+    public function test_guest_cannot_access_resumes(): void
+    {
+        $response = $this->getJson('/api/resumes');
+
+        $response->assertUnauthorized();
+    }
+
+    public function test_authenticated_user_can_only_see_own_resumes(): void
+    {
+        $user = User::factory()->create();
+        $otherUser = User::factory()->create();
+
+        $ownResume = Resume::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $otherResume = Resume::factory()->create([
+            'user_id' => $otherUser->id,
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->getJson('/api/resumes');
+
+        $response->assertSuccessful();
+
+        $response->assertJsonFragment([
+            'id' => $ownResume->id,
+        ]);
+
+        $response->assertJsonMissing([
+            'id' => $otherResume->id,
+        ]);
+    }
+
+    public function test_user_cannot_view_another_users_resume(): void
+    {
+        $user = User::factory()->create();
+        $otherUser = User::factory()->create();
+
+        $otherResume = Resume::factory()->create([
+            'user_id' => $otherUser->id,
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->getJson(
+            "/api/resumes/{$otherResume->id}"
+        );
+
+        $response->assertForbidden();
+    }
+
+    public function test_user_cannot_update_another_users_resume(): void
+    {
+        $user = User::factory()->create();
+        $otherUser = User::factory()->create();
+
+        $otherResume = Resume::factory()->create([
+            'user_id' => $otherUser->id,
+            'title' => 'Original Resume',
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->putJson(
+            "/api/resumes/{$otherResume->id}",
+            [
+                'title' => 'Hacked Resume',
+            ]
+        );
+
+        $response->assertForbidden();
+
+        $this->assertDatabaseHas('resumes', [
+            'id' => $otherResume->id,
+            'title' => 'Original Resume',
+        ]);
+    }
+
+    public function test_user_cannot_delete_another_users_resume(): void
+    {
+        $user = User::factory()->create();
+        $otherUser = User::factory()->create();
+
+        $otherResume = Resume::factory()->create([
+            'user_id' => $otherUser->id,
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->deleteJson(
+            "/api/resumes/{$otherResume->id}"
+        );
+
+        $response->assertForbidden();
+
+        $this->assertDatabaseHas('resumes', [
+            'id' => $otherResume->id,
+        ]);
+    }
 }
+
