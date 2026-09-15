@@ -20,7 +20,7 @@ class ResumeVersionFactory extends Factory
             'version_number' => 1,
             'status' => 'draft',
             'summary' => fake()->paragraph(),
-            'template' => 'default',
+            'template' => 'classic',
         ];
     }
 }

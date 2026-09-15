@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Language;
 use App\Models\Resume;
-use App\Models\ResumeExperience;
-use App\Models\ResumeVersion;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +11,14 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        $this->call([
+            LanguageSeeder::class,
+        ]);
+
+        $arabic = Language::query()
+            ->where('code', 'ar')
+            ->firstOrFail();
+
         $user = User::query()->updateOrCreate(
             ['email' => 'test@astcv.local'],
             [
@@ -20,7 +27,7 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        $profile = $user->profile()->updateOrCreate(
+        $user->profile()->updateOrCreate(
             [],
             [
                 'first_name' => 'AST',
@@ -35,6 +42,7 @@ class DatabaseSeeder extends Seeder
         $resume = $user->resumes()->updateOrCreate(
             ['title' => 'Software Developer Resume'],
             [
+                'language_id' => $arabic->id,
                 'status' => 'draft',
             ]
         );

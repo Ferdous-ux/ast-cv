@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Resume extends Model
 {
@@ -14,12 +13,14 @@ class Resume extends Model
 
     protected $fillable = [
         'user_id',
+        'language_id',
         'title',
         'status',
         'current_version_id',
     ];
 
     protected $casts = [
+        'language_id' => 'integer',
         'current_version_id' => 'integer',
     ];
 
@@ -29,6 +30,14 @@ class Resume extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Resume belongs to one writing language.
+     */
+    public function language(): BelongsTo
+    {
+        return $this->belongsTo(Language::class);
     }
 
     /**
@@ -42,7 +51,7 @@ class Resume extends Model
     /**
      * Get the current version of the resume.
      */
-    public function currentVersion()
+    public function currentVersion(): BelongsTo
     {
         return $this->belongsTo(
             ResumeVersion::class,
