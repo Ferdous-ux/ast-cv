@@ -1,0 +1,224 @@
+/* =====================================
+   AST-CV
+   User Edit Page
+===================================== */
+
+
+.user-edit-page{
+
+    width:100%;
+
+}
+
+
+
+.user-edit-header{
+
+
+    background:white;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:16px;
+
+    padding:28px;
+
+    margin-bottom:30px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+}
+
+
+
+.user-edit-icon{
+
+
+    width:55px;
+
+    height:55px;
+
+    border-radius:50%;
+
+    background:#fee2e2;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:25px;
+
+}
+
+
+
+.user-edit-header h2{
+
+
+    margin:0;
+
+    font-size:24px;
+
+    font-weight:800;
+
+}
+
+
+
+.user-edit-header p{
+
+
+    margin-top:8px;
+
+    color:#6b7280;
+
+}
+
+
+
+
+.user-edit-card{
+
+
+    background:white;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:16px;
+
+    padding:30px;
+
+}
+
+
+
+
+.user-field{
+
+
+    margin-bottom:22px;
+
+}
+
+
+
+
+.user-field label{
+
+
+    display:block;
+
+    margin-bottom:8px;
+
+    font-weight:700;
+
+}
+
+
+
+.user-field input,
+.user-field select{
+
+
+    width:100%;
+
+    padding:13px 15px;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:12px;
+
+    font-size:14px;
+
+}
+
+
+
+
+.user-field input:focus,
+.user-field select:focus{
+
+
+    outline:none;
+
+    border-color:#dc2626;
+
+}
+
+
+
+.user-field small{
+
+
+    color:#6b7280;
+
+    margin-top:5px;
+
+    display:block;
+
+}
+
+
+
+
+.user-save{
+
+
+    margin-top:30px;
+
+}
+
+
+
+.user-save button{
+
+
+    background:#dc2626;
+
+    color:white;
+
+    border:none;
+
+    padding:13px 35px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+}
+
+
+
+.user-save button:hover{
+
+
+    background:#b91c1c;
+
+}
+
+
+
+
+
+
+html[dir="rtl"] .user-edit-page{
+
+    direction:rtl;
+
+}
+
+
+
+html[dir="ltr"] .user-edit-page{
+
+    direction:ltr;
+
+}

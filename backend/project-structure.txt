@@ -1,0 +1,291 @@
+﻿Folder PATH listing
+Volume serial number is 34E1-5B81
+C:.
+|   .editorconfig
+|   .env
+|   .env.example
+|   .gitattributes
+|   .gitignore
+|   .phpunit.result.cache
+|   artisan
+|   composer.json
+|   composer.lock
+|   package.json
+|   phpunit.xml
+|   project-structure.txt
+|   README.md
+|   vite.config.js
+|   
++---app
+|   +---Http
+|   |   +---Controllers
+|   |   |   |   Controller.php
+|   |   |   |   
+|   |   |   +---Admin
+|   |   |   |       StaffController.php
+|   |   |   |       
+|   |   |   \---Api
+|   |   |           AuthController.php
+|   |   |           ProfileController.php
+|   |   |           ResumeAwardController.php
+|   |   |           ResumeCertificateController.php
+|   |   |           ResumeController.php
+|   |   |           ResumeEducationController.php
+|   |   |           ResumeExperienceController.php
+|   |   |           ResumeLanguageController.php
+|   |   |           ResumeLinkController.php
+|   |   |           ResumeProjectController.php
+|   |   |           ResumePublicationController.php
+|   |   |           ResumeSkillController.php
+|   |   |           ResumeVersionController.php
+|   |   |           
+|   |   \---Requests
+|   |       |   StoreProfileRequest.php
+|   |       |   StoreResumeAwardRequest.php
+|   |       |   StoreResumeCertificateRequest.php
+|   |       |   StoreResumeEducationRequest.php
+|   |       |   StoreResumeExperienceRequest.php
+|   |       |   StoreResumeLanguageRequest.php
+|   |       |   StoreResumeLinkRequest.php
+|   |       |   StoreResumeProjectRequest.php
+|   |       |   StoreResumePublicationRequest.php
+|   |       |   StoreResumeRequest.php
+|   |       |   StoreResumeSkillRequest.php
+|   |       |   StoreResumeVersionRequest.php
+|   |       |   UpdateProfileRequest.php
+|   |       |   UpdateResumeAwardRequest.php
+|   |       |   UpdateResumeCertificateRequest.php
+|   |       |   UpdateResumeEducationRequest.php
+|   |       |   UpdateResumeExperienceRequest.php
+|   |       |   UpdateResumeLanguageRequest.php
+|   |       |   UpdateResumeLinkRequest.php
+|   |       |   UpdateResumeProjectRequest.php
+|   |       |   UpdateResumePublicationRequest.php
+|   |       |   UpdateResumeRequest.php
+|   |       |   UpdateResumeSkillRequest.php
+|   |       |   UpdateResumeVersionRequest.php
+|   |       |   
+|   |       \---Admin
+|   |               StoreStaffRequest.php
+|   |               UpdateStaffRequest.php
+|   |               UpdateStaffRolesRequest.php
+|   |               
+|   +---Models
+|   |       Language.php
+|   |       Permission.php
+|   |       Profile.php
+|   |       Resume.php
+|   |       ResumeAward.php
+|   |       ResumeCertificate.php
+|   |       ResumeEducation.php
+|   |       ResumeExperience.php
+|   |       ResumeLanguage.php
+|   |       ResumeLink.php
+|   |       ResumeProject.php
+|   |       ResumePublication.php
+|   |       ResumeSkill.php
+|   |       ResumeVersion.php
+|   |       Role.php
+|   |       Skill.php
+|   |       User.php
+|   |       
+|   +---Modules
+|   |   +---Administration
+|   |   +---AI
+|   |   +---ATS
+|   |   +---Billing
+|   |   +---Identity
+|   |   +---Jobs
+|   |   +---Matching
+|   |   \---Resume
+|   +---Policies
+|   |       ResumePolicy.php
+|   |       StaffPolicy.php
+|   |       
+|   +---Providers
+|   |       AppServiceProvider.php
+|   |       
+|   \---Shared
++---bootstrap
+|   |   app.php
+|   |   providers.php
+|   |   
+|   \---cache
+|           .gitignore
+|           packages.php
+|           services.php
+|           
++---config
+|       app.php
+|       auth.php
+|       cache.php
+|       database.php
+|       filesystems.php
+|       logging.php
+|       mail.php
+|       queue.php
+|       sanctum.php
+|       services.php
+|       session.php
+|       
++---database
+|   |   .gitignore
+|   |   database.sqlite
+|   |   
+|   +---factories
+|   |       LanguageFactory.php
+|   |       ResumeAwardFactory.php
+|   |       ResumeExperienceFactory.php
+|   |       ResumeFactory.php
+|   |       ResumeLanguageFactory.php
+|   |       ResumeLinkFactory.php
+|   |       ResumePublicationFactory.php
+|   |       ResumeSkillFactory.php
+|   |       ResumeVersionFactory.php
+|   |       SkillFactory.php
+|   |       UserFactory.php
+|   |       
+|   +---migrations
+|   |       0001_01_01_000000_create_users_table.php
+|   |       0001_01_01_000001_create_cache_table.php
+|   |       0001_01_01_000002_create_jobs_table.php
+|   |       2026_08_30_165652_create_resumes_table.php
+|   |       2026_08_30_165757_create_profiles_table.php
+|   |       2026_08_30_170941_create_resume_versions_table.php
+|   |       2026_08_30_171045_add_current_version_id_to_resumes_table.php
+|   |       2026_08_30_171132_create_resume_experiences_table.php
+|   |       2026_08_30_171236_create_resume_educations_table.php
+|   |       2026_08_30_171322_create_skills_table.php
+|   |       2026_08_30_171353_create_resume_skills_table.php
+|   |       2026_08_30_171433_create_languages_table.php
+|   |       2026_08_30_171514_create_resume_languages_table.php
+|   |       2026_08_30_171555_create_resume_projects_table.php
+|   |       2026_08_30_171633_create_resume_certificates_table.php
+|   |       2026_08_30_171713_create_resume_awards_table.php
+|   |       2026_08_30_171751_create_resume_publications_table.php
+|   |       2026_08_30_171827_create_resume_links_table.php
+|   |       2026_09_01_173811_create_personal_access_tokens_table.php
+|   |       2026_09_15_164455_enhance_languages_and_add_language_to_resumes.php
+|   |       2026_09_15_184928_create_roles_table.php
+|   |       2026_09_15_184930_create_permissions_table.php
+|   |       2026_09_15_185102_create_role_user_table.php
+|   |       2026_09_15_185129_create_permission_role_table.php
+|   |       
+|   \---seeders
+|           DatabaseSeeder.php
+|           LanguageSeeder.php
+|           RbacSeeder.php
+|           
++---docs
+|   +---architecture
+|   |       module-structure.md
+|   |       
+|   \---database
+|           erd.md
+|           relationships.md
+|           schema.md
+|           
++---public
+|       .htaccess
+|       favicon.ico
+|       index.php
+|       robots.txt
+|       
++---resources
+|   +---css
+|   |       app.css
+|   |       
+|   +---js
+|   |       app.js
+|   |       bootstrap.js
+|   |       
+|   \---views
+|           welcome.blade.php
+|           
++---routes
+|       api.php
+|       console.php
+|       web.php
+|       
++---storage
+|   +---app
+|   |   |   .gitignore
+|   |   |   
+|   |   +---private
+|   |   |       .gitignore
+|   |   |       
+|   |   \---public
+|   |           .gitignore
+|   |           
+|   +---framework
+|   |   |   .gitignore
+|   |   |   
+|   |   +---cache
+|   |   |   |   .gitignore
+|   |   |   |   
+|   |   |   \---data
+|   |   |           .gitignore
+|   |   |           
+|   |   +---sessions
+|   |   |       .gitignore
+|   |   |       
+|   |   +---testing
+|   |   |       .gitignore
+|   |   |       
+|   |   \---views
+|   |           .gitignore
+|   |           b5e117a4b8b498b6441e0c76373cbbce.php
+|   |           
+|   \---logs
+|           .gitignore
+|           laravel.log
+|           
++---tests
+|   |   TestCase.php
+|   |   
+|   +---Feature
+|   |       AdminStaffTest.php
+|   |       AuthTest.php
+|   |       ExampleTest.php
+|   |       LanguageTest.php
+|   |       ProfileTest.php
+|   |       RbacTest.php
+|   |       ResumeAwardTest.php
+|   |       ResumeCertificateTest.php
+|   |       ResumeEducationTest.php
+|   |       ResumeExperienceTest.php
+|   |       ResumeLanguageTest.php
+|   |       ResumeLinkTest.php
+|   |       ResumeProjectTest.php
+|   |       ResumePublicationTest.php
+|   |       ResumeSkillTest.php
+|   |       ResumeTest.php
+|   |       ResumeVersionTest.php
+|   |       
+|   \---Unit
+|           ExampleTest.php
+|           
+\---vendor
+    |   autoload.php
+    |   
+    +---bin
+    |       carbon
+    |       carbon.bat
+    |       patch-type-declarations
+    |       patch-type-declarations.bat
+    |       php-parse
+    |       php-parse.bat
+    |       phpunit
+    |       phpunit.bat
+    |       pint
+    |       pint.bat
+    |       psysh
+    |       psysh.bat
+    |       sail
+    |       sail.bat
+    |       var-dump-server
+    |       var-dump-server.bat
+    |       yaml-lint
+    |       yaml-lint.bat
+    |       
+    +

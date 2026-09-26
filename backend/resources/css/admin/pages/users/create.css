@@ -1,0 +1,182 @@
+.users-form{
+
+    padding:25px;
+
+}
+
+
+.users-form-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:20px;
+
+}
+
+
+
+.form-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+}
+
+
+
+.form-group label{
+
+    font-size:14px;
+
+    font-weight:700;
+
+    color:#111827;
+
+}
+
+
+
+.form-group input,
+.form-group select{
+
+
+    height:45px;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:10px;
+
+    padding:0 14px;
+
+    font-size:14px;
+
+    outline:none;
+
+}
+
+
+
+.form-group input:focus,
+.form-group select:focus{
+
+
+    border-color:#dc2626;
+
+}
+
+
+
+.form-error{
+
+    color:#dc2626;
+
+    font-size:12px;
+
+}
+
+
+
+
+.users-save{
+
+    margin-top:30px;
+
+}
+
+
+
+.users-save button{
+
+
+    background:#dc2626;
+
+    color:white;
+
+    border:none;
+
+    padding:13px 35px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+}
+
+
+
+.users-save button:hover{
+
+
+    background:#b91c1c;
+
+}
+
+/* ===============================
+   Save Button
+================================ */
+
+
+.users-save{
+
+    margin-top:30px;
+
+    display:flex;
+
+    justify-content:flex-start;
+
+}
+
+
+
+
+.users-save button{
+
+
+    background:#dc2626;
+
+    color:#ffffff;
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:13px 35px;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+
+
+.users-save button:hover{
+
+
+    background:#b91c1c;
+
+}
+
+
+@media(max-width:800px){
+
+
+.users-form-grid{
+
+    grid-template-columns:1fr;
+
+}
+
+
+}

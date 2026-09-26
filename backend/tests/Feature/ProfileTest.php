@@ -170,3 +170,4 @@ class ProfileTest extends TestCase
             ]);
     }
 }
+

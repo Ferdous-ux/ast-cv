@@ -1,0 +1,735 @@
+/*
+=========================================================
+AST-CV ADMIN
+Notifications Component
+=========================================================
+*/
+
+
+/* =====================================================
+   Wrapper
+===================================================== */
+
+
+.admin-notification-wrapper {
+
+    position:relative;
+
+}
+
+
+
+
+
+/* =====================================================
+   Notification Button
+===================================================== */
+
+
+.admin-notification {
+
+
+    position:relative;
+
+
+    width:38px;
+
+    height:38px;
+
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+
+
+    color:var(--color-text-secondary);
+
+
+    background:var(--color-surface);
+
+
+    border:1px solid var(--color-border);
+
+
+    border-radius:12px;
+
+
+    cursor:pointer;
+
+
+
+    transition:
+
+        background var(--duration-fast) var(--ease-out),
+
+        border-color var(--duration-fast) var(--ease-out),
+
+        color var(--duration-fast) var(--ease-out);
+
+
+
+}
+
+
+
+
+
+.admin-notification:hover {
+
+
+    background:var(--color-surface-hover);
+
+
+    border-color:var(--color-border-hover);
+
+
+    color:var(--color-primary);
+
+
+}
+
+
+
+
+
+.admin-notification svg {
+
+
+    width:18px;
+
+    height:18px;
+
+
+    stroke:currentColor;
+
+    fill:none;
+
+
+    stroke-width:2;
+
+
+    stroke-linecap:round;
+
+    stroke-linejoin:round;
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =====================================================
+   Badge
+===================================================== */
+
+
+.admin-notification__badge {
+
+
+    position:absolute;
+
+
+    top:-6px;
+
+
+    inset-inline-end:-6px;
+
+
+
+    min-width:19px;
+
+    height:19px;
+
+
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+
+
+    padding:0 5px;
+
+
+
+    background:#dc2626;
+
+
+    color:#fff;
+
+
+
+    border-radius:999px;
+
+
+
+    font-size:10px;
+
+
+    font-weight:700;
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =====================================================
+   Dropdown
+===================================================== */
+
+
+.admin-notification-dropdown {
+
+
+    display:none;
+
+
+    position:absolute;
+
+
+
+    top:52px;
+
+
+
+    inset-inline-end:0;
+
+
+
+    width:360px;
+
+
+
+    background:var(--color-surface);
+
+
+
+    border:1px solid var(--color-border);
+
+
+
+    border-radius:18px;
+
+
+
+    box-shadow:
+
+        0 20px 50px rgba(0,0,0,.15);
+
+
+
+    overflow:hidden;
+
+
+
+    z-index:300;
+
+
+
+}
+
+
+
+
+
+.admin-notification-dropdown.is-open {
+
+
+    display:block;
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =====================================================
+   Header
+===================================================== */
+
+
+.notification-header {
+
+
+    display:flex;
+
+
+    align-items:center;
+
+
+    justify-content:space-between;
+
+
+    padding:16px 18px;
+
+
+
+    border-bottom:
+
+        1px solid var(--color-border);
+
+
+
+}
+
+
+
+
+
+.notification-header strong {
+
+
+    color:var(--color-text);
+
+
+    font-size:15px;
+
+
+}
+
+
+
+
+
+.notification-read-all {
+
+
+    border:none;
+
+
+    background:transparent;
+
+
+    color:var(--color-primary);
+
+
+    font-size:12px;
+
+
+    cursor:pointer;
+
+
+
+    padding:6px 10px;
+
+
+    border-radius:8px;
+
+
+}
+
+
+
+
+
+.notification-read-all:hover {
+
+
+    background:var(--color-primary-soft);
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =====================================================
+   Notification Item
+===================================================== */
+
+
+.admin-notification-item {
+
+
+    display:flex;
+
+
+    align-items:flex-start;
+
+
+    justify-content:space-between;
+
+
+    gap:12px;
+
+
+
+    padding:16px 18px;
+
+
+
+    border-bottom:
+
+        1px solid var(--color-border-light);
+
+
+
+    transition:.2s ease;
+
+
+
+}
+
+
+
+
+
+.admin-notification-item:hover {
+
+
+    background:var(--color-surface-soft);
+
+
+}
+
+
+
+
+
+.admin-notification-item.unread {
+
+
+    background:rgba(220,38,38,.04);
+
+
+}
+
+
+
+
+
+
+
+
+.notification-open {
+
+
+    flex:1;
+
+
+    border:none;
+
+
+    background:transparent;
+
+
+    text-align:inherit;
+
+
+    cursor:pointer;
+
+
+    padding:0;
+
+
+
+}
+
+
+
+
+
+
+
+
+.admin-notification-item strong {
+
+
+    display:block;
+
+
+    margin-bottom:6px;
+
+
+
+    color:var(--color-text);
+
+
+
+    font-size:14px;
+
+
+    font-weight:600;
+
+
+
+}
+
+
+
+
+
+
+
+
+.admin-notification-item p {
+
+
+    margin:0;
+
+
+    color:var(--color-text-secondary);
+
+
+    font-size:13px;
+
+
+
+    line-height:1.6;
+
+
+}
+
+
+
+
+
+
+
+.admin-notification-item small {
+
+
+    display:block;
+
+
+    margin-top:8px;
+
+
+    color:var(--color-text-subtle);
+
+
+    font-size:11px;
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =====================================================
+   Delete Button
+===================================================== */
+
+
+.notification-delete {
+
+
+    width:26px;
+
+
+    height:26px;
+
+
+    display:flex;
+
+
+    align-items:center;
+
+
+    justify-content:center;
+
+
+
+    border:none;
+
+
+    border-radius:50%;
+
+
+
+    background:#fee2e2;
+
+
+    color:#dc2626;
+
+
+
+    cursor:pointer;
+
+
+
+}
+
+
+
+
+
+.notification-delete:hover {
+
+
+    background:#fecaca;
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =====================================================
+   Empty State
+===================================================== */
+
+
+.admin-notification-empty {
+
+
+    padding:45px 20px;
+
+
+    text-align:center;
+
+
+
+    color:var(--color-text-muted);
+
+
+    font-size:14px;
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =====================================================
+   Footer
+===================================================== */
+
+
+.notification-footer {
+
+
+    display:block;
+
+
+    padding:14px;
+
+
+    text-align:center;
+
+
+
+    border-top:
+
+        1px solid var(--color-border);
+
+
+
+    color:var(--color-primary);
+
+
+
+    font-size:13px;
+
+
+    text-decoration:none;
+
+
+
+}
+
+
+
+
+
+.notification-footer:hover {
+
+
+    background:var(--color-surface-soft);
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =====================================================
+   RTL
+===================================================== */
+
+
+html[dir="rtl"] .admin-notification-dropdown {
+
+
+    text-align:right;
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =====================================================
+   Mobile
+===================================================== */
+
+
+@media(max-width:768px){
+
+
+
+    .admin-notification-dropdown {
+
+
+        width:300px;
+
+
+        inset-inline-end:-80px;
+
+
+    }
+
+
+
+}
