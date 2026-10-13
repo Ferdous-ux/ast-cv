@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Skill extends Model
 {
@@ -15,9 +16,6 @@ class Skill extends Model
         'category',
     ];
 
-    /**
-     * Skill belongs to many resume versions.
-     */
     public function resumeVersions(): BelongsToMany
     {
         return $this->belongsToMany(
@@ -29,5 +27,13 @@ class Skill extends Model
             'level',
             'sort_order',
         ])->withTimestamps();
+    }
+
+    public function aliases(): HasMany
+    {
+        return $this->hasMany(
+            SkillAlias::class,
+            'skill_id'
+        );
     }
 }

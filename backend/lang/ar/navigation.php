@@ -5,9 +5,10 @@ return [
     'dashboard' => 'لوحة التحكم',
 
     'management' => 'الإدارة',
-    'users' => 'المستخدمون',
-    'resumes' => 'السير الذاتية',
     'staff' => 'الموظفون',
+    'users' => 'المستخدمون',
+    'jobs' => 'الوظائف',
+    'resumes' => 'السير الذاتية',
     'templates' => 'القوالب',
 
     'content' => 'المحتوى',
@@ -18,8 +19,7 @@ return [
     'ats' => 'تحليل ATS',
 
     'system' => 'النظام',
-    'settings' => 'الإعدادات',
     'notifications' => 'الإشعارات',
-
-'activity' => 'سجل النشاطات',
+    'activity' => 'سجل الأنشطة',
+    'settings' => 'الإعدادات',
 ];

@@ -8,18 +8,20 @@ use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\RoleManagementController;
 use App\Http\Controllers\Admin\PermissionManagementController;
 use App\Http\Controllers\Admin\UserManagementController;
-
+use App\Modules\Jobs\Http\Controllers\Admin\JobController;
+use App\Modules\ATS\Http\Controllers\Admin\ATSController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-
-
+use App\Modules\Resume\Http\Controllers\Admin\AdminTemplateController;
+use App\Modules\Resume\Http\Controllers\Admin\AdminResumeController;
+use App\Modules\Resume\Http\Controllers\Admin\AdminSkillController;
+use App\Modules\Resume\Http\Controllers\Admin\AdminLanguageController;
 Route::prefix('admin')
     ->name('admin.')
     ->middleware('web')
     ->group(function () {
 
-
+Route::resource('jobs', JobController::class);
 
 
 
@@ -96,9 +98,37 @@ Route::prefix('admin')
 
 
 
+Route::prefix('ats')->name('ats.')->group(function () {
+    Route::get('/', [ATSController::class, 'index'])->name('index');
+    Route::get('/create', [ATSController::class, 'create'])->name('create');
+    Route::post('/', [ATSController::class, 'store'])->name('store');
+    Route::get('/{analysis}', [ATSController::class, 'show'])->name('show');
+    Route::delete('/{analysis}', [ATSController::class, 'destroy'])->name('destroy');
+});
 
-
-
+Route::resource(
+    'templates',
+    AdminTemplateController::class
+)->except(['show']);
+Route::resource(
+    'resumes',
+    AdminResumeController::class
+)->only([
+    'index',
+    'show',
+]);
+Route::resource(
+    'skills',
+    AdminSkillController::class
+)->except([
+    'show',
+]);
+Route::resource(
+    'languages',
+    AdminLanguageController::class
+)->except([
+    'show',
+]);
 
             /*
             |--------------------------------------------------------------------------

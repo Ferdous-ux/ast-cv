@@ -5,9 +5,10 @@ return [
     'dashboard' => 'Dashboard',
 
     'management' => 'Management',
-    'users' => 'Users',
-    'resumes' => 'Resumes',
     'staff' => 'Staff',
+    'users' => 'Users',
+    'jobs' => 'Jobs',
+    'resumes' => 'Resumes',
     'templates' => 'Templates',
 
     'content' => 'Content',
@@ -18,8 +19,7 @@ return [
     'ats' => 'ATS Analysis',
 
     'system' => 'System',
-    'settings' => 'Settings',
     'notifications' => 'Notifications',
-
-'activity' => 'Activity Logs',
+    'activity' => 'Activity Logs',
+    'settings' => 'Settings',
 ];
