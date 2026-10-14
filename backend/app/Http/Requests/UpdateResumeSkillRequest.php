@@ -18,8 +18,9 @@ class UpdateResumeSkillRequest extends FormRequest
                 'sometimes',
                 'nullable',
                 'string',
-                'max:50',
+                'in:beginner,intermediate,advanced,expert,Beginner,Intermediate,Advanced,Expert',
             ],
+
             'sort_order' => [
                 'sometimes',
                 'integer',

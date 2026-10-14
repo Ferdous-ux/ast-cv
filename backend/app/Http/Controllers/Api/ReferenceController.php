@@ -7,6 +7,7 @@ use App\Models\Language;
 use App\Models\ResumeTemplate;
 use App\Models\Skill;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class ReferenceController extends Controller
 {
@@ -31,15 +32,32 @@ class ReferenceController extends Controller
         ]);
     }
 
-    public function skills(): JsonResponse
-    {
+    public function skills(
+        Request $request
+    ): JsonResponse {
         $skills = Skill::query()
+            ->where(function ($query) use ($request) {
+                $query->where(
+                    'approval_status',
+                    Skill::STATUS_APPROVED
+                );
+
+                if ($request->user()) {
+                    $query->orWhere(
+                        'created_by',
+                        $request->user()->id
+                    );
+                }
+            })
             ->orderBy('category')
             ->orderBy('name')
             ->get([
                 'id',
                 'name',
                 'category',
+                'origin',
+                'approval_status',
+                'created_by',
             ]);
 
         return response()->json([

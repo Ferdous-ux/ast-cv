@@ -73,7 +73,21 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/', [ProfileController::class, 'update']);
     });
 
+Route::post(
+    '/resumes/{resume}/skills/bulk',
+    [
+        ResumeSkillController::class,
+        'storeBulk',
+    ]
+)->name('resumes.skills.bulk');
 
+Route::post(
+    '/resumes/{resume}/skills/custom',
+    [
+        ResumeSkillController::class,
+        'storeCustom',
+    ]
+)->name('resumes.skills.custom');
     /*
     |--------------------------------------------------------------------------
     | Resumes
