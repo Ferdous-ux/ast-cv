@@ -21,7 +21,7 @@ Route::prefix('admin')
     ->middleware('web')
     ->group(function () {
 
-Route::resource('jobs', JobController::class);
+
 
 
 
@@ -97,7 +97,7 @@ Route::resource('jobs', JobController::class);
 
 
 
-
+Route::resource('jobs', JobController::class);
 Route::prefix('ats')->name('ats.')->group(function () {
     Route::get('/', [ATSController::class, 'index'])->name('index');
     Route::get('/create', [ATSController::class, 'create'])->name('create');

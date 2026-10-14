@@ -12,151 +12,305 @@ class JobController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Job::with(['creator', 'skills'])->latest();
+        $query = Job::with([
+            'creator',
+            'skills',
+        ])->latest();
 
         if ($request->filled('search')) {
-            $search = trim($request->search);
+            $search = trim(
+                (string) $request->search
+            );
 
-            $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                    ->orWhere('company_name', 'like', "%{$search}%")
-                    ->orWhere('location', 'like', "%{$search}%");
-            });
+            $query->where(
+                function ($query) use ($search) {
+                    $query
+                        ->where(
+                            'title',
+                            'like',
+                            "%{$search}%"
+                        )
+                        ->orWhere(
+                            'company_name',
+                            'like',
+                            "%{$search}%"
+                        )
+                        ->orWhere(
+                            'location',
+                            'like',
+                            "%{$search}%"
+                        );
+                }
+            );
         }
 
         if ($request->filled('status')) {
-            $query->where('status', $request->status);
+            $query->where(
+                'status',
+                $request->status
+            );
         }
 
-        $jobs = $query->paginate(15)->withQueryString();
-        $totalJobs = Job::count();
-        $activeJobs = Job::where('status', 'active')->count();
+        $jobs = $query
+            ->paginate(15)
+            ->withQueryString();
 
-        return view('admin.jobs.index', compact(
-            'jobs',
-            'totalJobs',
-            'activeJobs'
-        ));
+        $totalJobs = Job::count();
+
+        $activeJobs = Job::query()
+            ->where('status', 'active')
+            ->count();
+
+        return view(
+            'admin.jobs.index',
+            compact(
+                'jobs',
+                'totalJobs',
+                'activeJobs'
+            )
+        );
     }
 
     public function create()
     {
-        $skills = Skill::orderBy('category')
+        $skills = Skill::query()
+            ->orderBy('category')
             ->orderBy('name')
             ->get();
 
-        return view('admin.jobs.create', compact('skills'));
+        return view(
+            'admin.jobs.create',
+            compact('skills')
+        );
     }
 
     public function store(Request $request)
     {
-        $data = $this->validateJob($request);
+        $data = $this->validateJob(
+            $request
+        );
 
-        DB::transaction(function () use ($data) {
-            $job = Job::create([
-                'created_by' => auth()->id(),
-                'title' => $data['title'],
-                'company_name' => $data['company_name'] ?? null,
-                'location' => $data['location'] ?? null,
-                'employment_type' => $data['employment_type'] ?? null,
-                'workplace_type' => $data['workplace_type'] ?? null,
-                'description' => $data['description'],
-                'requirements' => $data['requirements'] ?? null,
-                'minimum_experience_years' => $data['minimum_experience_years'] ?? null,
-                'education_level' => $data['education_level'] ?? null,
-                'status' => $data['status'],
-                'published_at' => $data['status'] === 'active' ? now() : null,
-            ]);
+        DB::transaction(
+            function () use ($data) {
+                $job = Job::create([
+                    'created_by' => auth()->id(),
 
-            $job->skills()->sync(
-                $this->prepareSkills($data)
-                
-            );
-        });
+                    'title' =>
+                        $data['title'],
+
+                    'company_name' =>
+                        $data['company_name']
+                        ?? null,
+
+                    'location' =>
+                        $data['location']
+                        ?? null,
+
+                    'employment_type' =>
+                        $data['employment_type']
+                        ?? null,
+
+                    'workplace_type' =>
+                        $data['workplace_type']
+                        ?? null,
+
+                    'description' =>
+                        $data['description'],
+
+                    'requirements' =>
+                        $data['requirements']
+                        ?? null,
+
+                    'minimum_experience_years' =>
+                        $data['minimum_experience_years']
+                        ?? null,
+
+                    'education_level' =>
+                        $data['education_level']
+                        ?? null,
+
+                    'status' =>
+                        $data['status'],
+
+                    'published_at' =>
+                        $data['status'] === 'active'
+                            ? now()
+                            : null,
+                ]);
+
+                $job->skills()->sync(
+                    $this->prepareSkills(
+                        $data
+                    )
+                );
+            }
+        );
 
         return redirect()
             ->route('admin.jobs.index')
-            ->with('success', __('jobs.create_success'));
+            ->with(
+                'success',
+                __('jobs.create_success')
+            );
     }
 
     public function show(Job $job)
     {
-        $job->load(['creator', 'skills']);
+        $job->load([
+            'creator',
+            'skills',
+        ]);
 
-        return view('admin.jobs.show', compact('job'));
+        return view(
+            'admin.jobs.show',
+            compact('job')
+        );
     }
 
     public function edit(Job $job)
     {
         $job->load('skills');
 
-        $skills = Skill::orderBy('category')
+        $skills = Skill::query()
+            ->orderBy('category')
             ->orderBy('name')
             ->get();
 
-        return view('admin.jobs.edit', compact(
-            'job',
-            'skills'
-        ));
+        return view(
+            'admin.jobs.edit',
+            compact(
+                'job',
+                'skills'
+            )
+        );
     }
 
-    public function update(Request $request, Job $job)
-    {
-        $data = $this->validateJob($request);
+    public function update(
+        Request $request,
+        Job $job
+    ) {
+        $data = $this->validateJob(
+            $request
+        );
 
-        DB::transaction(function () use ($job, $data) {
-            $publishedAt = $job->published_at;
+        DB::transaction(
+            function () use (
+                $job,
+                $data
+            ) {
+                $publishedAt =
+                    $job->published_at;
 
-            if ($data['status'] === 'active' && !$publishedAt) {
-                $publishedAt = now();
+                if (
+                    $data['status'] === 'active'
+                    && !$publishedAt
+                ) {
+                    $publishedAt = now();
+                }
+
+                if (
+                    $data['status'] !== 'active'
+                ) {
+                    $publishedAt = null;
+                }
+
+                $job->update([
+                    'title' =>
+                        $data['title'],
+
+                    'company_name' =>
+                        $data['company_name']
+                        ?? null,
+
+                    'location' =>
+                        $data['location']
+                        ?? null,
+
+                    'employment_type' =>
+                        $data['employment_type']
+                        ?? null,
+
+                    'workplace_type' =>
+                        $data['workplace_type']
+                        ?? null,
+
+                    'description' =>
+                        $data['description'],
+
+                    'requirements' =>
+                        $data['requirements']
+                        ?? null,
+
+                    'minimum_experience_years' =>
+                        $data['minimum_experience_years']
+                        ?? null,
+
+                    'education_level' =>
+                        $data['education_level']
+                        ?? null,
+
+                    'status' =>
+                        $data['status'],
+
+                    'published_at' =>
+                        $publishedAt,
+                ]);
+
+                $job->skills()->sync(
+                    $this->prepareSkills(
+                        $data
+                    )
+                );
             }
-
-            if ($data['status'] !== 'active') {
-                $publishedAt = null;
-            }
-
-            $job->update([
-                'title' => $data['title'],
-                'company_name' => $data['company_name'] ?? null,
-                'location' => $data['location'] ?? null,
-                'employment_type' => $data['employment_type'] ?? null,
-                'workplace_type' => $data['workplace_type'] ?? null,
-                'description' => $data['description'],
-                'requirements' => $data['requirements'] ?? null,
-                'minimum_experience_years' => $data['minimum_experience_years'] ?? null,
-                'education_level' => $data['education_level'] ?? null,
-                'status' => $data['status'],
-                'published_at' => $publishedAt,
-            ]);
-
-            $job->skills()->sync(
-                $this->prepareSkills($data)
-            );
-        });
+        );
 
         return redirect()
             ->route('admin.jobs.index')
-            ->with('success', __('jobs.update_success'));
+            ->with(
+                'success',
+                __('jobs.update_success')
+            );
     }
 
     public function destroy(Job $job)
     {
-        DB::transaction(function () use ($job) {
-            $job->skills()->detach();
-            $job->delete();
-        });
+        DB::transaction(
+            function () use ($job) {
+                $job->skills()->detach();
+
+                $job->delete();
+            }
+        );
 
         return redirect()
             ->route('admin.jobs.index')
-            ->with('success', __('jobs.delete_success'));
+            ->with(
+                'success',
+                __('jobs.delete_success')
+            );
     }
 
-    private function validateJob(Request $request): array
-    {
+    private function validateJob(
+        Request $request
+    ): array {
         return $request->validate([
-            'title' => ['required', 'string', 'max:150'],
-            'company_name' => ['nullable', 'string', 'max:150'],
-            'location' => ['nullable', 'string', 'max:150'],
+            'title' => [
+                'required',
+                'string',
+                'max:150',
+            ],
+
+            'company_name' => [
+                'nullable',
+                'string',
+                'max:150',
+            ],
+
+            'location' => [
+                'nullable',
+                'string',
+                'max:150',
+            ],
 
             'employment_type' => [
                 'nullable',
@@ -168,8 +322,15 @@ class JobController extends Controller
                 'in:onsite,remote,hybrid',
             ],
 
-            'description' => ['required', 'string'],
-            'requirements' => ['nullable', 'string'],
+            'description' => [
+                'required',
+                'string',
+            ],
+
+            'requirements' => [
+                'nullable',
+                'string',
+            ],
 
             'minimum_experience_years' => [
                 'nullable',
@@ -190,9 +351,9 @@ class JobController extends Controller
             ],
 
             'skill_ids' => [
-    'nullable',
-    'array',
-],
+                'nullable',
+                'array',
+            ],
 
             'skill_ids.*' => [
                 'integer',
@@ -234,23 +395,47 @@ class JobController extends Controller
         ]);
     }
 
-    private function prepareSkills(array $data): array
-    {
+    private function prepareSkills(
+        array $data
+    ): array {
         $syncData = [];
 
-        foreach ($data['skill_ids'] as $skillId) {
+        foreach (
+            $data['skill_ids'] ?? []
+            as $skillId
+        ) {
             $skillId = (int) $skillId;
 
-            $importance = $data['importance'][$skillId] ?? 'required';
-            $weight = (int) ($data['weight'][$skillId] ?? 100);
-            $minimumLevel = $data['minimum_level'][$skillId] ?? null;
+            $importance =
+                $data['importance'][$skillId]
+                ?? 'required';
+
+            $weight = (int) (
+                $data['weight'][$skillId]
+                ?? 100
+            );
+
+            $minimumLevel =
+                $data['minimum_level'][$skillId]
+                ?? null;
 
             $syncData[$skillId] = [
-                'importance' => $importance,
-                'weight' => max(1, min(100, $weight)),
-                'minimum_level' => filled($minimumLevel)
-                    ? $minimumLevel
-                    : null,
+                'importance' =>
+                    $importance,
+
+                'weight' =>
+                    max(
+                        1,
+                        min(
+                            100,
+                            $weight
+                        )
+                    ),
+
+                'minimum_level' =>
+                    filled($minimumLevel)
+                        ? $minimumLevel
+                        : null,
             ];
         }
 
