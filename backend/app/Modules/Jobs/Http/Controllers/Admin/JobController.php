@@ -12,36 +12,34 @@ class JobController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Job::with([
-            'creator',
-            'skills',
-        ])->latest();
+        $query = Job::query()
+            ->platform()
+            ->with([
+                'creator',
+                'skills',
+            ])
+            ->latest();
 
         if ($request->filled('search')) {
-            $search = trim(
-                (string) $request->search
-            );
+            $search = trim($request->search);
 
-            $query->where(
-                function ($query) use ($search) {
-                    $query
-                        ->where(
-                            'title',
-                            'like',
-                            "%{$search}%"
-                        )
-                        ->orWhere(
-                            'company_name',
-                            'like',
-                            "%{$search}%"
-                        )
-                        ->orWhere(
-                            'location',
-                            'like',
-                            "%{$search}%"
-                        );
-                }
-            );
+            $query->where(function ($q) use ($search) {
+                $q->where(
+                    'title',
+                    'like',
+                    "%{$search}%"
+                )
+                    ->orWhere(
+                        'company_name',
+                        'like',
+                        "%{$search}%"
+                    )
+                    ->orWhere(
+                        'location',
+                        'like',
+                        "%{$search}%"
+                    );
+            });
         }
 
         if ($request->filled('status')) {
@@ -55,9 +53,12 @@ class JobController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        $totalJobs = Job::count();
+        $totalJobs = Job::query()
+            ->platform()
+            ->count();
 
         $activeJobs = Job::query()
+            ->platform()
             ->where('status', 'active')
             ->count();
 
@@ -86,65 +87,55 @@ class JobController extends Controller
 
     public function store(Request $request)
     {
-        $data = $this->validateJob(
-            $request
-        );
+        $data = $this->validateJob($request);
 
-        DB::transaction(
-            function () use ($data) {
-                $job = Job::create([
-                    'created_by' => auth()->id(),
+        DB::transaction(function () use ($data) {
+            $job = Job::query()->create([
+                'created_by' => auth()->id(),
 
-                    'title' =>
-                        $data['title'],
+                'source_type' => 'platform',
+                'source_url' => null,
 
-                    'company_name' =>
-                        $data['company_name']
+                'title' => $data['title'],
+
+                'company_name' =>
+                    $data['company_name'] ?? null,
+
+                'location' =>
+                    $data['location'] ?? null,
+
+                'employment_type' =>
+                    $data['employment_type'] ?? null,
+
+                'workplace_type' =>
+                    $data['workplace_type'] ?? null,
+
+                'description' =>
+                    $data['description'],
+
+                'requirements' =>
+                    $data['requirements'] ?? null,
+
+                'minimum_experience_years' =>
+                    $data['minimum_experience_years']
                         ?? null,
 
-                    'location' =>
-                        $data['location']
-                        ?? null,
+                'education_level' =>
+                    $data['education_level'] ?? null,
 
-                    'employment_type' =>
-                        $data['employment_type']
-                        ?? null,
+                'status' =>
+                    $data['status'],
 
-                    'workplace_type' =>
-                        $data['workplace_type']
-                        ?? null,
+                'published_at' =>
+                    $data['status'] === 'active'
+                        ? now()
+                        : null,
+            ]);
 
-                    'description' =>
-                        $data['description'],
-
-                    'requirements' =>
-                        $data['requirements']
-                        ?? null,
-
-                    'minimum_experience_years' =>
-                        $data['minimum_experience_years']
-                        ?? null,
-
-                    'education_level' =>
-                        $data['education_level']
-                        ?? null,
-
-                    'status' =>
-                        $data['status'],
-
-                    'published_at' =>
-                        $data['status'] === 'active'
-                            ? now()
-                            : null,
-                ]);
-
-                $job->skills()->sync(
-                    $this->prepareSkills(
-                        $data
-                    )
-                );
-            }
-        );
+            $job->skills()->sync(
+                $this->prepareSkills($data)
+            );
+        });
 
         return redirect()
             ->route('admin.jobs.index')
@@ -156,6 +147,8 @@ class JobController extends Controller
 
     public function show(Job $job)
     {
+        $this->ensurePlatformJob($job);
+
         $job->load([
             'creator',
             'skills',
@@ -169,6 +162,8 @@ class JobController extends Controller
 
     public function edit(Job $job)
     {
+        $this->ensurePlatformJob($job);
+
         $job->load('skills');
 
         $skills = Skill::query()
@@ -189,9 +184,9 @@ class JobController extends Controller
         Request $request,
         Job $job
     ) {
-        $data = $this->validateJob(
-            $request
-        );
+        $this->ensurePlatformJob($job);
+
+        $data = $this->validateJob($request);
 
         DB::transaction(
             function () use (
@@ -220,34 +215,35 @@ class JobController extends Controller
 
                     'company_name' =>
                         $data['company_name']
-                        ?? null,
+                            ?? null,
 
                     'location' =>
                         $data['location']
-                        ?? null,
+                            ?? null,
 
                     'employment_type' =>
                         $data['employment_type']
-                        ?? null,
+                            ?? null,
 
                     'workplace_type' =>
                         $data['workplace_type']
-                        ?? null,
+                            ?? null,
 
                     'description' =>
                         $data['description'],
 
                     'requirements' =>
                         $data['requirements']
-                        ?? null,
+                            ?? null,
 
                     'minimum_experience_years' =>
-                        $data['minimum_experience_years']
-                        ?? null,
+                        $data[
+                            'minimum_experience_years'
+                        ] ?? null,
 
                     'education_level' =>
                         $data['education_level']
-                        ?? null,
+                            ?? null,
 
                     'status' =>
                         $data['status'],
@@ -257,9 +253,7 @@ class JobController extends Controller
                 ]);
 
                 $job->skills()->sync(
-                    $this->prepareSkills(
-                        $data
-                    )
+                    $this->prepareSkills($data)
                 );
             }
         );
@@ -274,10 +268,11 @@ class JobController extends Controller
 
     public function destroy(Job $job)
     {
+        $this->ensurePlatformJob($job);
+
         DB::transaction(
             function () use ($job) {
                 $job->skills()->detach();
-
                 $job->delete();
             }
         );
@@ -408,16 +403,16 @@ class JobController extends Controller
 
             $importance =
                 $data['importance'][$skillId]
-                ?? 'required';
+                    ?? 'required';
 
             $weight = (int) (
                 $data['weight'][$skillId]
-                ?? 100
+                    ?? 100
             );
 
             $minimumLevel =
                 $data['minimum_level'][$skillId]
-                ?? null;
+                    ?? null;
 
             $syncData[$skillId] = [
                 'importance' =>
@@ -440,5 +435,14 @@ class JobController extends Controller
         }
 
         return $syncData;
+    }
+
+    private function ensurePlatformJob(
+        Job $job
+    ): void {
+        abort_unless(
+            $job->source_type === 'platform',
+            404
+        );
     }
 }

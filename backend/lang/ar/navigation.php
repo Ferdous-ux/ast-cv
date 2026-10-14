@@ -22,4 +22,5 @@ return [
     'notifications' => 'الإشعارات',
     'activity' => 'سجل الأنشطة',
     'settings' => 'الإعدادات',
+    'matching' => 'المطابقة',
 ];

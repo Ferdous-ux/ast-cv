@@ -15,7 +15,10 @@ use App\Http\Controllers\Api\ResumePublicationController;
 use App\Http\Controllers\Api\ResumeSkillController;
 use App\Http\Controllers\Api\ResumeVersionController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Api\ATSController;
+use App\Http\Controllers\Api\MatchingController;
+use App\Http\Controllers\Api\ReferenceController;
+use App\Http\Controllers\Api\TargetJobController;
 /*
 |--------------------------------------------------------------------------
 | Public API Routes
@@ -220,13 +223,126 @@ Route::middleware('auth:sanctum')->group(function () {
     |--------------------------------------------------------------------------
     | Resume Links
     |--------------------------------------------------------------------------
-    */
+    *//*
+|--------------------------------------------------------------------------
+| Target Jobs
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('target-jobs')
+    ->name('target-jobs.')
+    ->group(function () {
+
+        Route::get(
+            '/',
+            [TargetJobController::class, 'index']
+        )->name('index');
+
+        Route::post(
+            '/',
+            [TargetJobController::class, 'store']
+        )->name('store');
+
+        Route::get(
+            '/{job}',
+            [TargetJobController::class, 'show']
+        )->name('show');
+
+        Route::put(
+            '/{job}',
+            [TargetJobController::class, 'update']
+        )->name('update');
+
+        Route::delete(
+            '/{job}',
+            [TargetJobController::class, 'destroy']
+        )->name('destroy');
+
+        Route::post(
+            '/{job}/analyze',
+            [TargetJobController::class, 'analyze']
+        )
+        ->middleware('throttle:10,1')
+        ->name('analyze');
+    });
 
     Route::apiResource(
         'resumes.links',
         ResumeLinkController::class
     )->except(['create', 'edit']);
+/*
+|--------------------------------------------------------------------------
+| Reference Data
+|--------------------------------------------------------------------------
+*/
 
+Route::prefix('reference')
+    ->name('reference.')
+    ->group(function () {
+
+        Route::get(
+            '/templates',
+            [ReferenceController::class, 'templates']
+        )->name('templates');
+
+        Route::get(
+            '/skills',
+            [ReferenceController::class, 'skills']
+        )->name('skills');
+
+        Route::get(
+            '/languages',
+            [ReferenceController::class, 'languages']
+        )->name('languages');
+    });
+
+
+/*
+|--------------------------------------------------------------------------
+| ATS
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('ats')
+    ->name('ats.')
+    ->group(function () {
+
+        Route::get(
+            '/analyses',
+            [ATSController::class, 'index']
+        )->name('analyses.index');
+
+        Route::post(
+            '/analyze',
+            [ATSController::class, 'analyze']
+        )
+        ->middleware('throttle:10,1')
+        ->name('analyze');
+
+        Route::get(
+            '/analyses/{analysis}',
+            [ATSController::class, 'show']
+        )->name('analyses.show');
+    });
+
+
+/*
+|--------------------------------------------------------------------------
+| Matching
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('matching')
+    ->name('matching.')
+    ->group(function () {
+
+        Route::post(
+            '/resumes/{version}/jobs',
+            [MatchingController::class, 'jobsForResume']
+        )
+        ->middleware('throttle:5,1')
+        ->name('resume.jobs');
+    });
 
     /*
     |--------------------------------------------------------------------------

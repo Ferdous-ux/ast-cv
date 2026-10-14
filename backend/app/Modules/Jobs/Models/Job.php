@@ -17,6 +17,8 @@ class Job extends Model
 
     protected $fillable = [
         'created_by',
+        'source_type',
+        'source_url',
         'title',
         'company_name',
         'location',
@@ -58,8 +60,26 @@ class Job extends Model
         ])->withTimestamps();
     }
 
+    public function scopePlatform($query)
+    {
+        return $query->where(
+            'source_type',
+            'platform'
+        );
+    }
+
+    public function scopeTarget($query)
+    {
+        return $query->where(
+            'source_type',
+            'target'
+        );
+    }
+
     public function scopeActive($query)
     {
-        return $query->where('status', 'active');
+        return $query
+            ->where('source_type', 'platform')
+            ->where('status', 'active');
     }
 }

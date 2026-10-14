@@ -16,6 +16,7 @@ use App\Modules\Resume\Http\Controllers\Admin\AdminTemplateController;
 use App\Modules\Resume\Http\Controllers\Admin\AdminResumeController;
 use App\Modules\Resume\Http\Controllers\Admin\AdminSkillController;
 use App\Modules\Resume\Http\Controllers\Admin\AdminLanguageController;
+use App\Modules\Matching\Http\Controllers\Admin\MatchingController;
 Route::prefix('admin')
     ->name('admin.')
     ->middleware('web')
@@ -130,6 +131,27 @@ Route::resource(
     'show',
 ]);
 
+
+
+
+
+
+
+Route::get(
+    '/matching',
+    [
+        MatchingController::class,
+        'index',
+    ]
+)->name('matching.index');
+
+Route::post(
+    '/matching/run',
+    [
+        MatchingController::class,
+        'run',
+    ]
+)->name('matching.run');
             /*
             |--------------------------------------------------------------------------
             | Users Management

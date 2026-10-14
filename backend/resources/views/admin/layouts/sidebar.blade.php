@@ -238,7 +238,27 @@
                 <h2 class="admin-nav__label">
                     {{ __('navigation.intelligence') }}
                 </h2>
+{{-- Matching --}}
+<a
+    href="{{ route('admin.matching.index') }}"
+    class="admin-nav__link {{ request()->routeIs('admin.matching.*') ? 'is-active' : '' }}"
+>
+    <span class="admin-nav__icon">
+        <svg viewBox="0 0 24 24">
+            <circle cx="7" cy="12" r="3"></circle>
+            <circle cx="17" cy="12" r="3"></circle>
+            <path d="M10 12h4"></path>
+            <path d="M7 9V5h10v4"></path>
+            <path d="M7 15v4h10v-4"></path>
+        </svg>
+    </span>
 
+    <span class="admin-nav__text">
+        {{ __('navigation.matching') }}
+    </span>
+
+    <span class="admin-nav__active-indicator"></span>
+</a>
 
                 {{-- ATS --}}
                 <a

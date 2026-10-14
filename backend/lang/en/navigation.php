@@ -17,6 +17,7 @@ return [
 
     'intelligence' => 'Intelligence',
     'ats' => 'ATS Analysis',
+    'matching' => 'Matching',
 
     'system' => 'System',
     'notifications' => 'Notifications',

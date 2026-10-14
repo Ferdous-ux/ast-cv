@@ -8,72 +8,139 @@ use App\Modules\ATS\Models\ATSAnalysis;
 use App\Modules\ATS\Services\ATSAnalyzerService;
 use App\Modules\Jobs\Models\Job;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ATSController extends Controller
 {
     public function index(Request $request)
     {
-        $query = ATSAnalysis::with([
-            'resumeVersion.resume.user',
-            'job',
-            'analyzer',
-        ])->latest('analyzed_at');
+        $query = ATSAnalysis::query()
+            ->whereHas(
+                'job',
+                fn ($query) =>
+                    $query->where(
+                        'source_type',
+                        'platform'
+                    )
+            )
+            ->with([
+                'resumeVersion.resume.user',
+                'job',
+                'analyzer',
+            ])
+            ->latest('analyzed_at');
 
         if ($request->filled('search')) {
-            $search = trim($request->search);
+            $search = trim(
+                $request->search
+            );
 
-            $query->where(function ($q) use ($search) {
-                $q->whereHas('job', function ($jobQuery) use ($search) {
-                    $jobQuery->where('title', 'like', "%{$search}%")
-                        ->orWhere('company_name', 'like', "%{$search}%");
-                })->orWhereHas('resumeVersion.resume', function ($resumeQuery) use ($search) {
-                    $resumeQuery->where('title', 'like', "%{$search}%");
-                });
-            });
+            $query->where(
+                function ($q) use ($search) {
+                    $q->whereHas(
+                        'job',
+                        function (
+                            $jobQuery
+                        ) use ($search) {
+                            $jobQuery
+                                ->where(
+                                    'title',
+                                    'like',
+                                    "%{$search}%"
+                                )
+                                ->orWhere(
+                                    'company_name',
+                                    'like',
+                                    "%{$search}%"
+                                );
+                        }
+                    )
+                    ->orWhereHas(
+                        'resumeVersion.resume',
+                        function (
+                            $resumeQuery
+                        ) use ($search) {
+                            $resumeQuery->where(
+                                'title',
+                                'like',
+                                "%{$search}%"
+                            );
+                        }
+                    );
+                }
+            );
         }
 
         $analyses = $query
             ->paginate(15)
             ->withQueryString();
 
-        $totalAnalyses = ATSAnalysis::count();
+        $platformAnalyses =
+            ATSAnalysis::query()
+                ->whereHas(
+                    'job',
+                    fn ($query) =>
+                        $query->where(
+                            'source_type',
+                            'platform'
+                        )
+                );
+
+        $totalAnalyses =
+            (clone $platformAnalyses)
+                ->count();
 
         $averageScore = round(
-            (float) ATSAnalysis::avg('overall_score'),
+            (float) (
+                (clone $platformAnalyses)
+                    ->avg('overall_score')
+            ),
             1
         );
 
-        $strongMatches = ATSAnalysis::where(
-            'overall_score',
-            '>=',
-            80
-        )->count();
+        $strongMatches =
+            (clone $platformAnalyses)
+                ->where(
+                    'overall_score',
+                    '>=',
+                    80
+                )
+                ->count();
 
-        return view('admin.ats.index', compact(
-            'analyses',
-            'totalAnalyses',
-            'averageScore',
-            'strongMatches'
-        ));
+        return view(
+            'admin.ats.index',
+            compact(
+                'analyses',
+                'totalAnalyses',
+                'averageScore',
+                'strongMatches'
+            )
+        );
     }
 
     public function create()
     {
-        $resumeVersions = ResumeVersion::with([
-            'resume.user',
-        ])
-            ->latest('id')
-            ->get();
+        $resumeVersions =
+            ResumeVersion::query()
+                ->with([
+                    'resume.user',
+                ])
+                ->latest('id')
+                ->get();
 
-        $jobs = Job::with('skills')
-            ->where('status', 'active')
+        $jobs = Job::query()
+            ->active()
+            ->with('skills')
             ->latest()
             ->get();
 
-        return view('admin.ats.create', compact(
-            'resumeVersions',
-            'jobs'
-        ));
+        return view(
+            'admin.ats.create',
+            compact(
+                'resumeVersions',
+                'jobs'
+            )
+        );
     }
 
     public function store(
@@ -90,34 +157,61 @@ class ATSController extends Controller
             'job_posting_id' => [
                 'required',
                 'integer',
-                'exists:job_postings,id',
+
+                Rule::exists(
+                    'job_postings',
+                    'id'
+                )->where(
+                    fn ($query) =>
+                        $query
+                            ->where(
+                                'source_type',
+                                'platform'
+                            )
+                            ->where(
+                                'status',
+                                'active'
+                            )
+                ),
             ],
         ]);
 
-        $resumeVersion = ResumeVersion::findOrFail(
-            $data['resume_version_id']
-        );
+        $resumeVersion =
+            ResumeVersion::findOrFail(
+                $data['resume_version_id']
+            );
 
-        $job = Job::findOrFail(
-            $data['job_posting_id']
-        );
+        $job = Job::query()
+            ->active()
+            ->findOrFail(
+                $data['job_posting_id']
+            );
 
-        $analysis = $analyzer->analyze(
-            $resumeVersion,
-            $job,
-            auth()->user()
-        );
+        $analysis =
+            $analyzer->analyze(
+                $resumeVersion,
+                $job,
+                auth()->user()
+            );
 
         return redirect()
-            ->route('admin.ats.show', $analysis)
+            ->route(
+                'admin.ats.show',
+                $analysis
+            )
             ->with(
                 'success',
                 __('ats.analysis_success')
             );
     }
 
-    public function show(ATSAnalysis $analysis)
-    {
+    public function show(
+        ATSAnalysis $analysis
+    ) {
+        $this->ensurePlatformAnalysis(
+            $analysis
+        );
+
         $analysis->load([
             'resumeVersion.resume.user',
             'resumeVersion.skills',
@@ -133,8 +227,13 @@ class ATSController extends Controller
         );
     }
 
-    public function destroy(ATSAnalysis $analysis)
-    {
+    public function destroy(
+        ATSAnalysis $analysis
+    ) {
+        $this->ensurePlatformAnalysis(
+            $analysis
+        );
+
         $analysis->delete();
 
         return redirect()
@@ -143,5 +242,18 @@ class ATSController extends Controller
                 'success',
                 __('ats.delete_success')
             );
+    }
+
+    private function ensurePlatformAnalysis(
+        ATSAnalysis $analysis
+    ): void {
+        $analysis->loadMissing('job');
+
+        abort_unless(
+            $analysis->job
+                && $analysis->job->source_type
+                    === 'platform',
+            404
+        );
     }
 }
