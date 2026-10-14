@@ -1,0 +1,959 @@
+/*
+=========================================================
+AST-CV ADMIN
+Permissions Management
+=========================================================
+*/
+
+
+.permissions-page {
+
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+
+}
+
+
+
+/* =====================================================
+   Hero
+===================================================== */
+
+
+.permissions-hero {
+
+
+    background:var(--color-surface);
+
+
+    border:1px solid var(--color-border);
+
+
+    border-radius:22px;
+
+
+    padding:28px;
+
+
+    display:flex;
+
+
+    align-items:center;
+
+
+    gap:20px;
+
+
+}
+
+
+
+.permissions-hero__icon {
+
+
+    width:64px;
+
+    height:64px;
+
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+
+    border-radius:18px;
+
+
+    background:rgba(220,38,38,.08);
+
+
+    font-size:30px;
+
+
+}
+
+
+
+.permissions-hero h2 {
+
+
+    margin:0;
+
+
+    font-size:24px;
+
+
+    color:var(--color-text);
+
+
+}
+
+
+
+.permissions-hero p {
+
+
+    margin:6px 0 0;
+
+
+    color:var(--color-text-secondary);
+
+
+    font-size:14px;
+
+
+}
+
+
+
+
+
+
+
+.permissions-counter {
+
+
+    margin-inline-start:auto;
+
+
+    background:var(--color-surface-soft);
+
+
+    border-radius:18px;
+
+
+    padding:18px 30px;
+
+
+    text-align:center;
+
+
+}
+
+
+
+.permissions-counter span {
+
+
+    display:block;
+
+
+    color:var(--color-text-secondary);
+
+
+    font-size:13px;
+
+
+}
+
+
+
+.permissions-counter strong {
+
+
+    display:block;
+
+
+    margin-top:5px;
+
+
+    font-size:32px;
+
+
+    color:var(--color-primary);
+
+
+}
+
+
+
+
+
+
+
+/* =====================================================
+ Cards
+===================================================== */
+
+
+.permissions-card {
+
+
+    background:var(--color-surface);
+
+
+    border:1px solid var(--color-border);
+
+
+    border-radius:22px;
+
+
+    padding:28px;
+
+
+}
+
+
+
+.permissions-card__header {
+
+
+    display:flex;
+
+
+    justify-content:space-between;
+
+
+    margin-bottom:22px;
+
+
+}
+
+
+
+.permissions-card__header h3 {
+
+
+    margin:0;
+
+
+    font-size:20px;
+
+
+    color:var(--color-text);
+
+
+}
+
+
+
+.permissions-card__header p {
+
+
+    margin:6px 0 0;
+
+
+    color:var(--color-text-secondary);
+
+
+    font-size:14px;
+
+
+}
+
+
+
+
+
+
+
+/* =====================================================
+ Form
+===================================================== */
+
+
+.permissions-form {
+
+
+    display:flex;
+
+
+    align-items:end;
+
+
+    gap:20px;
+
+
+}
+
+
+
+.permissions-field {
+
+
+    flex:1;
+
+
+}
+
+
+
+.permissions-field label {
+
+
+    display:block;
+
+
+    margin-bottom:8px;
+
+
+    font-size:14px;
+
+
+    color:var(--color-text-secondary);
+
+
+}
+
+
+
+.permissions-field input {
+
+
+    width:100%;
+
+
+    height:44px;
+
+
+    padding:0 15px;
+
+
+    border-radius:12px;
+
+
+    border:1px solid var(--color-border);
+
+
+    background:var(--color-background);
+
+
+    color:var(--color-text);
+
+
+    outline:none;
+
+
+}
+
+
+
+.permissions-field input:focus {
+
+
+    border-color:var(--color-primary);
+
+
+}
+
+
+
+
+
+.permissions-btn {
+
+
+    height:44px;
+
+
+    padding:0 25px;
+
+
+    border:0;
+
+
+    border-radius:12px;
+
+
+    background:var(--color-primary);
+
+
+    color:white;
+
+
+    cursor:pointer;
+
+
+    font-weight:600;
+
+
+}
+
+
+
+
+
+.permissions-btn:hover {
+
+
+    opacity:.9;
+
+
+}
+
+
+
+
+
+
+
+/* =====================================================
+ Table
+===================================================== */
+
+
+.permissions-table-wrapper {
+
+
+    overflow-x:auto;
+
+
+}
+
+
+
+.permissions-table {
+
+
+    width:100%;
+
+
+    border-collapse:collapse;
+
+
+}
+
+
+
+.permissions-table th {
+
+
+    text-align:start;
+
+
+    padding:16px;
+
+
+    background:var(--color-surface-soft);
+
+
+    color:var(--color-text-secondary);
+
+
+    font-size:13px;
+
+
+}
+
+
+
+.permissions-table td {
+
+
+    padding:18px 16px;
+
+
+    border-bottom:1px solid var(--color-border-light);
+
+
+    color:var(--color-text);
+
+
+}
+
+
+
+.permissions-table tbody tr {
+
+
+    transition:.2s ease;
+
+
+}
+
+
+
+.permissions-table tbody tr:hover {
+
+
+    background:var(--color-surface-soft);
+
+
+}
+
+
+
+
+
+
+
+/* =====================================================
+ Permission Name
+===================================================== */
+
+
+.permission-name {
+
+
+    display:flex;
+
+
+    align-items:center;
+
+
+    gap:10px;
+
+
+    font-weight:600;
+
+
+}
+
+
+
+.permission-icon {
+
+
+    width:34px;
+
+
+    height:34px;
+
+
+    border-radius:10px;
+
+
+    display:flex;
+
+
+    align-items:center;
+
+
+    justify-content:center;
+
+
+    background:rgba(220,38,38,.08);
+
+
+}
+
+
+
+
+
+.permission-badge {
+
+
+    display:inline-flex;
+
+
+    padding:5px 12px;
+
+
+    border-radius:999px;
+
+
+    background:rgba(34,197,94,.12);
+
+
+    color:#16a34a;
+
+
+    font-size:12px;
+
+
+    font-weight:600;
+
+
+}
+
+
+
+
+
+
+
+.permission-delete {
+
+
+    border:0;
+
+
+    background:#fee2e2;
+
+
+    color:#dc2626;
+
+
+    padding:7px 16px;
+
+
+    border-radius:10px;
+
+
+    cursor:pointer;
+
+
+    font-size:13px;
+
+
+}
+
+
+
+.permission-delete:hover {
+
+
+    background:#fecaca;
+
+
+}
+
+
+
+
+
+
+
+.empty {
+
+
+    text-align:center;
+
+
+    padding:50px!important;
+
+
+    color:var(--color-text-secondary);
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =====================================================
+ RTL
+===================================================== */
+
+
+html[dir="rtl"] .permissions-table th,
+html[dir="rtl"] .permissions-table td {
+
+
+    text-align:right;
+
+
+}
+
+
+
+
+
+
+
+
+
+
+/* =====================================================
+ Pagination AST-CV STYLE
+===================================================== */
+
+
+.pagination-wrapper {
+
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+
+    padding:30px 0;
+
+
+}
+
+
+
+
+
+.pagination {
+
+
+    display:flex;
+
+
+    align-items:center;
+
+
+    gap:10px;
+
+
+    list-style:none;
+
+
+    margin:0;
+
+
+    padding:0;
+
+
+}
+
+
+
+
+
+.pagination li a,
+.pagination li span {
+
+
+
+    width:42px;
+
+
+    height:42px;
+
+
+
+    display:flex;
+
+
+    align-items:center;
+
+
+    justify-content:center;
+
+
+
+
+    border-radius:12px;
+
+
+
+
+    background:var(--color-surface);
+
+
+
+    border:1px solid var(--color-border);
+
+
+
+
+    color:var(--color-text-secondary);
+
+
+
+    font-size:14px;
+
+
+
+    font-weight:700;
+
+
+
+
+    text-decoration:none;
+
+
+
+    transition:.2s ease;
+
+
+
+}
+
+
+
+
+
+
+
+.pagination li a:hover {
+
+
+
+    background:var(--color-primary);
+
+
+
+    color:#fff;
+
+
+
+    border-color:var(--color-primary);
+
+
+
+}
+
+
+
+
+
+
+
+.pagination li.active span {
+
+
+
+    background:var(--color-primary);
+
+
+
+    color:#fff;
+
+
+
+    border-color:var(--color-primary);
+
+
+
+}
+
+
+
+
+
+
+
+.pagination li.disabled span {
+
+
+
+    opacity:.4;
+
+
+
+    cursor:not-allowed;
+
+
+
+}
+
+
+
+
+
+
+
+/* Previous / Next */
+
+
+.pagination li:first-child a,
+.pagination li:last-child a {
+
+
+
+    width:42px;
+
+
+    padding:0;
+
+
+
+}
+
+
+
+
+
+
+
+.pagination svg {
+
+
+    width:16px;
+
+
+    height:16px;
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =====================================================
+ Mobile
+===================================================== */
+
+
+@media(max-width:768px){
+
+
+    .permissions-hero {
+
+
+        flex-direction:column;
+
+
+        align-items:flex-start;
+
+
+    }
+
+
+
+
+    .permissions-counter {
+
+
+        width:100%;
+
+
+        margin:0;
+
+
+    }
+
+
+
+
+
+    .permissions-form {
+
+
+        flex-direction:column;
+
+
+        align-items:stretch;
+
+
+    }
+
+
+
+
+
+    .pagination {
+
+
+        gap:6px;
+
+
+    }
+
+
+
+
+    .pagination li a,
+    .pagination li span {
+
+
+        width:36px;
+
+
+        height:36px;
+
+
+    }
+
+
+}

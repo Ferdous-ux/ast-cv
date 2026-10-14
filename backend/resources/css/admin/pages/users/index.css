@@ -1,0 +1,758 @@
+/*
+=========================================================
+AST-CV ADMIN
+Users Management Page
+=========================================================
+*/
+
+
+.users-page{
+
+    width:100%;
+
+}
+
+
+
+/* =====================================================
+   Direction
+===================================================== */
+
+
+html[dir="rtl"] .users-page{
+
+    direction:rtl;
+
+}
+
+
+html[dir="ltr"] .users-page{
+
+    direction:ltr;
+
+}
+
+
+
+
+
+/* =====================================================
+   Hero Card
+===================================================== */
+
+
+.users-header-card{
+
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #111827,
+        #991b1b
+    );
+
+
+    border-radius:28px;
+
+
+    padding:45px;
+
+
+    margin-bottom:30px;
+
+
+    display:flex;
+
+
+    justify-content:space-between;
+
+
+    align-items:center;
+
+
+    color:white;
+
+
+}
+
+
+
+.users-header-card h2{
+
+
+    margin:0;
+
+
+    font-size:42px;
+
+
+    font-weight:900;
+
+
+}
+
+
+
+.users-header-card p{
+
+
+    margin-top:12px;
+
+
+    color:#e5e7eb;
+
+
+    font-size:16px;
+
+
+}
+
+
+
+
+
+
+.users-badge{
+
+
+    display:inline-block;
+
+
+    background:
+
+    rgba(255,255,255,.15);
+
+
+    padding:8px 20px;
+
+
+    border-radius:20px;
+
+
+    margin-bottom:15px;
+
+
+}
+
+
+
+
+
+
+
+/* =====================================================
+   Total Counter
+===================================================== */
+
+
+.users-total{
+
+
+    display:flex;
+
+
+    gap:15px;
+
+
+}
+
+
+
+.users-total-box{
+
+
+    background:#1f2937;
+
+
+    padding:25px;
+
+
+    border-radius:18px;
+
+
+    min-width:160px;
+
+
+    text-align:center;
+
+
+}
+
+
+
+.users-total-box span{
+
+
+    display:block;
+
+
+    color:#9ca3af;
+
+
+    font-size:14px;
+
+
+}
+
+
+
+.users-total-box strong{
+
+
+    display:block;
+
+
+    margin-top:10px;
+
+
+    font-size:30px;
+
+
+    color:white;
+
+
+}
+
+
+
+
+
+
+
+/* =====================================================
+   Panel
+===================================================== */
+
+
+.users-panel{
+
+
+    background:var(--color-surface);
+
+
+    border:
+
+
+    1px solid var(--color-border-light);
+
+
+    border-radius:22px;
+
+
+    overflow:hidden;
+
+
+}
+
+
+
+
+
+
+.users-panel-header{
+
+
+    padding:25px;
+
+
+    background:var(--color-surface);
+
+
+    border-bottom:
+
+
+    1px solid var(--color-border-light);
+
+
+    display:flex;
+
+
+    justify-content:space-between;
+
+
+    align-items:center;
+
+
+}
+
+
+
+.users-panel-header h3{
+
+
+    margin:0;
+
+
+    font-size:22px;
+
+
+    font-weight:800;
+
+
+}
+
+
+
+
+
+
+
+/* =====================================================
+   Add Button
+===================================================== */
+
+
+.users-add{
+
+
+    background:
+
+    var(--color-primary);
+
+
+    color:white;
+
+
+    padding:12px 25px;
+
+
+    border-radius:12px;
+
+
+    text-decoration:none;
+
+
+    font-weight:700;
+
+
+    transition:.2s;
+
+
+}
+
+
+
+.users-add:hover{
+
+
+    opacity:.9;
+
+
+}
+
+
+
+
+
+
+
+/* =====================================================
+   Table
+===================================================== */
+
+
+.users-table-wrapper{
+
+
+    padding:25px;
+
+
+    overflow-x:auto;
+
+
+}
+
+
+
+.users-table{
+
+
+    width:100%;
+
+
+    border-collapse:collapse;
+
+
+}
+
+
+
+.users-table th{
+
+
+    padding:16px;
+
+
+    font-size:12px;
+
+
+    font-weight:600;
+
+
+    color:
+
+    var(--color-text-muted);
+
+
+    border-bottom:
+
+
+    1px solid var(--color-border-light);
+
+
+}
+
+
+
+
+html[dir="rtl"] .users-table th{
+
+
+    text-align:right;
+
+
+}
+
+
+
+html[dir="ltr"] .users-table th{
+
+
+    text-align:left;
+
+
+}
+
+
+
+
+
+.users-table td{
+
+
+    padding:18px 16px;
+
+
+    border-bottom:
+
+
+    1px solid var(--color-border-light);
+
+
+    color:
+
+    var(--color-text-secondary);
+
+
+    font-size:14px;
+
+
+}
+
+
+
+.users-table tbody tr{
+
+
+    transition:.2s;
+
+
+}
+
+
+
+.users-table tbody tr:hover{
+
+
+    background:
+
+    var(--color-surface-soft);
+
+
+}
+
+
+
+
+
+
+
+/* =====================================================
+   User Cell
+===================================================== */
+
+
+.user-cell{
+
+
+    display:flex;
+
+
+    align-items:center;
+
+
+    gap:12px;
+
+
+}
+
+
+
+.user-avatar{
+
+
+    width:42px;
+
+
+    height:42px;
+
+
+    border-radius:50%;
+
+
+    display:flex;
+
+
+    align-items:center;
+
+
+    justify-content:center;
+
+
+    background:
+
+    var(--color-primary);
+
+
+    color:white;
+
+
+    font-size:14px;
+
+
+    font-weight:700;
+
+
+}
+
+
+
+
+
+
+
+/* =====================================================
+   Role Badge
+===================================================== */
+
+
+.user-role{
+
+
+    padding:5px 12px;
+
+
+    border-radius:999px;
+
+
+    background:
+
+    var(--color-primary-soft);
+
+
+    color:
+
+    var(--color-primary);
+
+
+    font-size:12px;
+
+
+    font-weight:600;
+
+
+}
+
+
+
+
+
+
+
+/* =====================================================
+   Status
+===================================================== */
+
+
+.user-status{
+
+
+    display:inline-flex;
+
+
+    align-items:center;
+
+
+    gap:6px;
+
+
+    padding:5px 12px;
+
+
+    border-radius:999px;
+
+
+    background:
+
+    var(--color-success-soft);
+
+
+    color:
+
+    var(--color-success);
+
+
+    font-size:12px;
+
+
+    font-weight:600;
+
+
+}
+
+
+
+.user-status::before{
+
+
+    content:"";
+
+
+    width:7px;
+
+
+    height:7px;
+
+
+    border-radius:50%;
+
+
+    background:
+
+    var(--color-success);
+
+
+}
+
+
+
+
+
+
+
+/* =====================================================
+   Actions
+===================================================== */
+
+
+.table-actions{
+
+
+    display:flex;
+
+
+    gap:8px;
+
+
+}
+
+
+
+.user-action-edit,
+.user-action-delete{
+
+
+    padding:7px 12px;
+
+
+    border-radius:10px;
+
+
+    font-size:12px;
+
+
+    text-decoration:none;
+
+
+}
+
+
+
+.user-action-edit{
+
+
+    background:
+
+    var(--color-surface-soft);
+
+
+    color:
+
+    var(--color-text);
+
+
+}
+
+
+
+.user-action-delete{
+
+
+    background:#fee2e2;
+
+
+    color:#b91c1c;
+
+
+}
+
+
+
+
+
+
+
+/* =====================================================
+   Mobile
+===================================================== */
+
+
+@media(max-width:768px){
+
+
+    .users-header-card{
+
+
+        flex-direction:column;
+
+
+        gap:25px;
+
+
+        align-items:flex-start;
+
+
+    }
+
+
+    .users-table{
+
+
+        min-width:800px;
+
+
+    }
+
+
+}
